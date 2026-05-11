@@ -100,8 +100,8 @@ This analysis establishes the **structural landscape of projection difficulty**,
 ### **Installation**
 
 ```bash
-git clone https://github.com/KANGYUlab/PreciseBridge.git
-cd pcctool
+git clone https://github.com/KANGYUlab/YAOBridge.git
+cd YAOBridge
 pip install .
 ```
 
