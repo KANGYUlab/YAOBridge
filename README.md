@@ -46,7 +46,7 @@ Each projected position is assigned a **Confidence Score (CS)** reflecting conse
 
 Reflects the hierarchical classification of the genomic region:
 
-- **Level 1**: Score = **4    **   **Level 2**: Score = **3**       **Level 3**: Score = **2**           **Level 4**: Score = **1**
+- **Level 1**: Score = **4**   **Level 2**: Score = **3**       **Level 3**: Score = **2**           **Level 4**: Score = **1**
 
 **S2: Alignment Quality**
 
