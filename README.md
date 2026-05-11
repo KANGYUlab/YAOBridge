@@ -51,17 +51,21 @@ Reflects the hierarchical classification of the genomic region:
 **S2: Alignment Quality**
 
 Evaluates the local sequence fidelity:
+
 $$
 S2 = 2 \times \text{identity} \times \text{coverage}
 $$
+
 *(Calculated based on inter-block alignment metrics)*
 
 **S3: Mappability**
 
 Penalizes multi-mapping or repetitive regions:
+
 $$
 S3 = \frac{2}{N_{\text{alignments}}}
 $$
+
 **S4: Synteny Consistency**
 
 Assesses the structural stability of the mapping:
@@ -71,6 +75,7 @@ Assesses the structural stability of the mapping:
 - **0**: Position maps to a **different chromosome** or is unmappable.
 
 ***Final projection score:***
+
 $$
 S = S1 + S2 + S3 + S4
 $$
