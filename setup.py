@@ -8,7 +8,7 @@ setuptools.setup(
     author_email="15623109189@163.com",
     description="A chain tool for confident position lift between hg38 and yao",
     url="",
-    install_requires=[],
+    install_requires=["intervaltree",],
     python_requires='>=3.10',
     packages=setuptools.find_packages(),
 include_package_data=True, # 建议开启
