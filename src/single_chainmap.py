@@ -4,7 +4,8 @@ def single_ref_to_query_pos(tree,chrom,pos):
     # overlap 返回的是一个 set，包含所有覆盖该位点的 Interval 对象
     hits = tree.at(pos) # 或者用 .overlap(pos, pos+1)
     if not hits:
-        print(f"No chains found at position {pos+1}")
+        # print(f"No chains found at position {pos+1}")
+        None
     for interval in hits:
         # interval.begin: 该 chain 的起始
         # interval.end: 该 chain 的结束
@@ -83,7 +84,8 @@ def single_query_to_ref_pos(tree,chrom,pos):
     # overlap 返回的是一个 set，包含所有覆盖该位点的 Interval 对象
     hits = tree.at(pos) # 或者用 .overlap(pos, pos+1)
     if not hits:
-        print(f"No chains found at position {pos+1}")
+        # print(f"No chains found at position {pos+1}")
+        None
     for interval in hits:
         # interval.begin: 该 chain 的起始
         # interval.end: 该 chain 的结束
