@@ -5,7 +5,8 @@ def mul_ref_to_query_pos(tree,chrom,pos):
     #     hits = tree.at(pos) # 或者用 .overlap(pos, pos+1)
     hits = tree.at(pos)
     if not hits:
-        print(f"No chains found at position {pos+1}")
+        # print(f"No chains found at position {pos+1}")
+        None
     # print(hits)
     for interval in hits:
         # interval.begin: 该 chain 的起始
@@ -87,7 +88,8 @@ def mul_query_to_ref_pos(tree,chrom,pos):
     #     hits = tree.at(pos) # 或者用 .overlap(pos, pos+1)
     hits = tree.at(pos)
     if not hits:
-        print(f"No chains found at position {pos+1}")
+        # print(f"No chains found at position {pos+1}")
+        None
     for interval in hits:
         # interval.begin: 该 chain 的起始
         # interval.end: 该 chain 的结束
