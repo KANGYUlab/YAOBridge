@@ -51,9 +51,11 @@ Reflects the hierarchical classification of the genomic region:
 **S2: Alignment Quality**
 
 Evaluates the local sequence fidelity:
- $$
+
+$$
 S2 = 2 \times \text{identity} \times \text{coverage}
- $$
+$$
+
 *(Calculated based on inter-block alignment metrics)*
 
 **S3: Mappability**
