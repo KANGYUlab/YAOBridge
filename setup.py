@@ -3,7 +3,7 @@ import setuptools
 
 setuptools.setup(
     name="YAOBridge",
-    version="1.1.0",
+    version="2.0.0",
     author="kangLab yijiyang",
     author_email="15623109189@163.com",
     description="A chain tool for confident position lift between hg38 and yao",

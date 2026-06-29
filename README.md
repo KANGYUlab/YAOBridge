@@ -111,9 +111,14 @@ pip install .
 
 ```bash
 $ YAOBridge -h
-usage: YAOBridge [-h] -s {hg38,yao} -t {hg38,yao} -file FILE -out OUT [-V]
+usage: YAOBridge [-h] [-V] {liftpos,liftbed} ...
 
-YAOBridge: hg38 <-> yao mapping
+PreciseBridge: hg38 <-> yao coordinate mapping tool
+
+positional arguments:
+  {liftpos,liftbed}  Available commands
+    liftpos          Mapping for positions file (chr pos(1-base))
+    liftbed          Mapping for BED files (chr start end(1-base))
 
 options:
   -h, --help     show this help message and exit
@@ -124,7 +129,8 @@ options:
   -V, --version  show program version
 ```
 
-### Output
+### Function liftpos: Mapping for positions file (chr pos(1-base))
+#### Output
 
 Output Data Format
 
@@ -132,11 +138,9 @@ The output is a tab-delimited file where each row represents the alignment resul
 
 a. Locus Coordinates: Query chromosome name and base position.
 
-b. Status Flag: Alignment status indicator (Found or NotFound).
+b. Mapping: High-confidence primary alignment result.
 
-c. 1-to-1 Mapping: High-confidence primary alignment result (None if unavailable).
-
-d. 1-to-N Mapping: Semicolon-delimited list of all potential multi-copy alignment results (None if unavailable).
+c. Mapping Score and Level: Confidence score for the alignment result.
 
 #### YAO-->GRCh38
 
@@ -152,7 +156,8 @@ d. 1-to-N Mapping: Semicolon-delimited list of all potential multi-copy alignmen
 **Code**
 
 ```bash
-YAOBridge -s yao -t hg38 \
+YAOBridge liftpos \
+  -s yao -t hg38 \
 	-file /data/yao2hg38.test \
 	-out /data/yao2hg38answer.txt
 ```
@@ -184,7 +189,8 @@ YAOBridge -s yao -t hg38 \
 **Code**
 
 ```bash
-PreciseBridge -s yao -t hg38 \
+YAOBridge liftpos \
+  -s hg38 -t yao \
 	-file /data/yao2hg38.test \
 	-out /data/yao2hg38answer.txt
 ```
@@ -199,3 +205,75 @@ PreciseBridge -s yao -t hg38 \
 | NC_000001.11     | 715741         | chr6             | 143006         | +          | 3.842     | 3         |
 
 (Unmapped data lines (level4) are exported to an exception log (`failed.txt`))
+
+
+### Function liftbed: Mapping for BED files (chr start end(1-base))
+#### Output
+
+Output Data Format
+
+The output is a tab-delimited file where each row represents the alignment result for a specific genomic locus, organized into four main segments:
+
+a. Locus Coordinates: Query chromosome name and bed including start and end positions.
+
+b. Mapping: High-confidence primary alignment result.
+
+c. Mapping Score and Level: Confidence score for the alignment result.
+
+#### YAO-->GRCh38
+
+**Input File**
+
+| **Chromosome** | **Start** | **End**  | **...** |
+| -------------- | --------- | -------- | ------- |
+| chr8           | 37757260  | 37783353 | ...     |
+| chr8           | 37892839  | 37893379 | ...     |
+| chr8           | 38300623  | 38477938 | ...     |
+
+**Code**
+
+```bash
+YAOBridge liftbed \
+  -s yao -t hg38 \
+	-file /data/yaobed.test \
+	-out /data/yao2hg38bed.test
+```
+
+**Output**
+
+| **Chromosome** | **Start** | **End**  | **Target_Chr** | **Target_Start** | **Target_End** | **Strand** | **Score** | **Type** | **Name**          | **Gene_Strand** |
+| -------------- | --------- | -------- | -------------- | ---------------- | -------------- | ---------- | --------- | -------- | ----------------- | --------------- |
+| chr8           | 37757260  | 37783353 | NC_000008.11   | 38565066         | 38591162       | +          | 9.9882    | 1        | gene-LOC105379384 | +               |
+| chr8           | 37892839  | 37893379 | NC_000008.11   | 38700636         | 38701176       | +          | 8.9956    | 2        | gene-LOC124901936 | -               |
+| chr8           | 38300623  | 38477938 | NC_000008.11   | 39107529         | 39284917       | +          | 6.9948    | 3        | gene-ADAM32       | +               |
+
+(Unmapped data lines are exported to an exception log (`failed.txt`))
+
+#### GRCh38-->YAO
+
+**Input File**
+
+| Chromosome | Start | End | ...  |
+| :--------- | :------- | :------- | :--- |
+| NC_000008.11 | 38565066   | 38591162  | ...  |
+| NC_000008.11 | 38700636   | 38701176  | ...  |
+| NC_000008.11 | 39107529   | 39284917  | ...  |
+
+**Code**
+
+```bash
+YAOBridge liftbed \
+  -s hg38 -t yao \
+	-file /data/hg38bed.test \
+	-out /data/hg382yaobed.test
+```
+
+**Output**
+
+| **Chromosome** | **Start** | **End**  | **Target_Chr** | **Target_Start** | **Target_End** | **Strand** | **Score** | **Type** |
+| -------------- | --------- | -------- | -------------- | ---------------- | -------------- | ---------- | --------- | -------- |
+| NC_000008.11   | 38565066  | 38591162 | chr8           | 37757260         | 37783353       | +          | 9.9882    | 1        |
+| NC_000008.11   | 38700636  | 38701176 | chr8           | 37892839         | 37893379       | +          | 8.9956    | 2        |
+| NC_000008.11   | 39107529  | 39284917 | chr8           | 38300623         | 38477938       | +          | 6.9948    | 3        |
+
+(Unmapped data lines are exported to an exception log (`failed.txt`))
