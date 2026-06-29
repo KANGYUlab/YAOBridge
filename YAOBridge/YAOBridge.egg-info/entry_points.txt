@@ -1,0 +1,2 @@
+[console_scripts]
+YAOBridge = src.PB:main

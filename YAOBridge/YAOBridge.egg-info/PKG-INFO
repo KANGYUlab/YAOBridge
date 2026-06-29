@@ -1,0 +1,16 @@
+Metadata-Version: 2.4
+Name: YAOBridge
+Version: 1.1.0
+Summary: A chain tool for confident position lift between hg38 and yao
+Home-page: 
+Author: kangLab yijiyang
+Author-email: 15623109189@163.com
+Requires-Python: >=3.10
+License-File: LICENSE
+Requires-Dist: intervaltree
+Dynamic: author
+Dynamic: author-email
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
