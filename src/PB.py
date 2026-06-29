@@ -32,8 +32,8 @@ def main(arglist=None):
     # 获取当前 PB.py 所在的目录，即 .../site-packages/src/
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     # 建立区间树
-    single_yao_2_hg38_trees,single_hg38_2_yao_trees = build_accurate_bidirectional_trees(BASE_DIR+"/data/map1v1.pb.chain") 
-    mul_yao_2_hg38_trees, mul_hg38_2_yao_trees = build_accurate_bidirectional_trees(BASE_DIR+"/data/map1vn.pb.chain")
+    single_yao_2_hg38_trees,single_hg38_2_yao_trees = build_accurate_bidirectional_trees(BASE_DIR+"/data/map1v1_left_align.chain") 
+    mul_yao_2_hg38_trees, mul_hg38_2_yao_trees = build_accurate_bidirectional_trees(BASE_DIR+"/data/map1vn_left_align.chain")
     # 预设的染色体映射（建议放在脚本顶部）
     args = get_args(arglist)
     if args.command == 'liftpos':
