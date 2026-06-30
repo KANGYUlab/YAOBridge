@@ -220,7 +220,7 @@ def main(arglist=None):
                         newchrom=pos_list[0][1]
                         score=str(pos_list[0][4])
                         level=pos_list[0][5]
-                        if pos1<pos2:
+                        if int(pos1.replace("Gap",""))<int(pos2.replace("Gap","")):
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos1),str(pos2),bedstrand,score,level,*datalist])+"\n")  
                         else:
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
@@ -287,7 +287,7 @@ def main(arglist=None):
                         newchrom=pos_list[0][1]
                         score=str(pos_list[0][4])
                         level=pos_list[0][5]
-                        if pos1<pos2:
+                        if int(pos1.replace("Gap",""))<int(pos2.replace("Gap","")):
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos1),str(pos2),bedstrand,score,level,*datalist])+"\n")  
                         else:
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
