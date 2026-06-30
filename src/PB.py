@@ -25,6 +25,12 @@ def dedup(items):
 
     return uniq
 
+def clean_pos(pos):
+    if isinstance(pos, int):
+        return pos
+    # 如果是字符串，去掉 Gap 后转成 int
+    return int(pos.replace("Gap", ""))
+    
 def main(arglist=None):
     # 1. 获取当前脚本文件的绝对路径（比如：/home/.../yaolinkhg38pcc/yaolinkhg38chain/hg38toyaochainlift.py）
     # # 获取当前文件所在目录的上一级（即项目根目录）
@@ -220,7 +226,7 @@ def main(arglist=None):
                         newchrom=pos_list[0][1]
                         score=str(pos_list[0][4])
                         level=pos_list[0][5]
-                        if int(pos1.replace("Gap",""))<int(pos2.replace("Gap","")):
+                        if clean_pos(pos1)<clean_pos(pos2):
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos1),str(pos2),bedstrand,score,level,*datalist])+"\n")  
                         else:
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
@@ -287,7 +293,7 @@ def main(arglist=None):
                         newchrom=pos_list[0][1]
                         score=str(pos_list[0][4])
                         level=pos_list[0][5]
-                        if int(pos1.replace("Gap",""))<int(pos2.replace("Gap","")):
+                        if clean_pos(pos1)<clean_pos(pos2):
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos1),str(pos2),bedstrand,score,level,*datalist])+"\n")  
                         else:
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
