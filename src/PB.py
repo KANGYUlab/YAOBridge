@@ -317,7 +317,7 @@ def main(arglist=None):
                             level=yao_pos[0][5]
                             # if type(pos1) == str or type(pos2) == str:
                             if len(yao_pos)==2:
-                                if pos1 < pos2:
+                                if clean_pos(pos1)<clean_pos(pos2):
                                     f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom, str(pos1),str(pos2),bedstrand,score,level,*datalist])+"\n")  
                                 else:
                                     f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom, str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
