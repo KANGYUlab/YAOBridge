@@ -7,6 +7,8 @@ from .arguments import get_args
 # from single_chainmap import *
 # from mul_chainmap import *
 # from treebuild import *
+# from single_bedmap import *
+# from mul_bedmap import *
 # from arguments import get_args
 import sys
 import os
@@ -40,6 +42,9 @@ def main(arglist=None):
     # 建立区间树
     single_yao_2_hg38_trees,single_hg38_2_yao_trees = build_accurate_bidirectional_trees(BASE_DIR+"/data/map1v1_left_align.chain") 
     mul_yao_2_hg38_trees, mul_hg38_2_yao_trees = build_accurate_bidirectional_trees(BASE_DIR+"/data/map1vn_left_align.chain")
+    # single_yao_2_hg38_trees,single_hg38_2_yao_trees = build_accurate_bidirectional_trees("/home/lfszxyy/old/annotation/gffConfidence-Total/teachersrc/speedhmPB/data2.0/left_align/map1v1_left_align.chain") 
+    # mul_yao_2_hg38_trees, mul_hg38_2_yao_trees = build_accurate_bidirectional_trees("/home/lfszxyy/old/annotation/gffConfidence-Total/teachersrc/speedhmPB/mat2patdata/left_align/map1vn_left_align.chain")
+
     # 预设的染色体映射（建议放在脚本顶部）
     args = get_args(arglist)
     if args.command == 'liftpos':
@@ -232,22 +237,23 @@ def main(arglist=None):
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
                     else:
                         f3.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(yao_pos),score,level,*datalist])+"\n")
-
+                    pos_list=[]
                     for hit in mul_hits:
                         yao_pos=mul_bed_ref_2_query(bed,hit)
-                        if len(yao_pos)==2 and yao_pos[0][0]!=yao_pos[1][0]:
-                            newchrom=yao_pos[0][1]
+                        pos_list.extend(yao_pos)
+                        if len(pos_list)==2 and pos_list[0][0]!=pos_list[1][0]:
+                            newchrom=pos_list[0][1]
                             try:
-                                pos1=yao_pos[0][2]+1
+                                pos1=pos_list[0][2]+1
                             except:
-                                pos1=yao_pos[0][2]
+                                pos1=pos_list[0][2]
                             try:
-                                pos2=yao_pos[1][2]+1
+                                pos2=pos_list[1][2]+1
                             except:
-                                pos2=yao_pos[1][2]
-                            bedstrand=yao_pos[0][3]
-                            score=str(yao_pos[0][4])
-                            level=yao_pos[0][5]
+                                pos2=pos_list[1][2]
+                            bedstrand=pos_list[0][3]
+                            score=str(pos_list[0][4])
+                            level=pos_list[0][5]
                             if type(pos1) == str or type(pos2) == str:
                                 f3.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos1),str(pos2),bedstrand,score,level,*datalist])+"\n")  
                             else:
@@ -282,13 +288,13 @@ def main(arglist=None):
                         pos_list.extend(yao_pos)
                     if len(pos_list)==2 and pos_list[0][0]!=pos_list[1][0]:
                         try:
-                            pos1=yao_pos[0][2]+1
+                            pos1=pos_list[0][2]+1
                         except:
-                            pos1=yao_pos[0][2]
+                            pos1=pos_list[0][2]
                         try:
-                            pos2=yao_pos[1][2]+1
+                            pos2=pos_list[1][2]+1
                         except:
-                            pos2=yao_pos[1][2]
+                            pos2=pos_list[1][2]
                         bedstrand=pos_list[0][3]
                         newchrom=pos_list[0][1]
                         score=str(pos_list[0][4])
@@ -299,24 +305,25 @@ def main(arglist=None):
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
                     else:
                         f3.write("\t".join([chrom,str(start+1),str(end+1),*datalist])+"\n")
-
+                    pos_list=[]
                     for hit in mul_hits:
                         yao_pos=mul_bed_query_2_ref(bed,hit)
-                        if len(yao_pos)==2 and yao_pos[0][0]!=yao_pos[1][0]:
-                            newchrom=yao_pos[0][1]
+                        pos_list.extend(yao_pos)                        
+                        if len(pos_list)==2 and pos_list[0][0]!=pos_list[1][0]:
+                            newchrom=pos_list[0][1]
                             try:
-                                pos1=yao_pos[0][2]+1
+                                pos1=pos_list[0][2]+1
                             except:
-                                pos1=yao_pos[0][2]
+                                pos1=pos_list[0][2]
                             try:
-                                pos2=yao_pos[1][2]+1
+                                pos2=pos_list[1][2]+1
                             except:
-                                pos2=yao_pos[1][2]
-                            bedstrand=yao_pos[0][3]
-                            score=str(yao_pos[0][4])
-                            level=yao_pos[0][5]
+                                pos2=pos_list[1][2]
+                            bedstrand=pos_list[0][3]
+                            score=str(pos_list[0][4])
+                            level=pos_list[0][5]
                             # if type(pos1) == str or type(pos2) == str:
-                            if len(yao_pos)==2:
+                            if len(pos_list)==2:
                                 if clean_pos(pos1)<clean_pos(pos2):
                                     f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom, str(pos1),str(pos2),bedstrand,score,level,*datalist])+"\n")  
                                 else:
@@ -329,8 +336,8 @@ if __name__ == '__main__':
     main()
     # main(arglist = [
     # "liftbed",
-    # "-s", "hg38",
-    # "-t", "yao",
-    # "-file", "/home/lfszxyy/old/annotation/gffConfidence-Total/teachersrc/speedhmPB/YAOBridge/src/data/hg38bed.test",
-    # "-out", "/home/lfszxyy/old/annotation/gffConfidence-Total/teachersrc/speedhmPB/YAOBridge/src/data/hg382yaobed.test"
+    # "-s", "yao",
+    # "-t", "hg38",
+    # "-file", "/home/lfszxyy/old/annotation/gffConfidence-Total/teachersrc/speedhmPB/YAOBridge2.0/src/datamatpatbed/test.txt",
+    # "-out", "/home/lfszxyy/old/annotation/gffConfidence-Total/teachersrc/speedhmPB/YAOBridge2.0/src/datamatpatbed/answer.txt"
     # ])
