@@ -209,6 +209,7 @@ def main(arglist=None):
                     if not single_hits and not mul_hits:
                         f3.write(line + '\n')
                         continue
+                    yao_pos=[]
                     pos_list=[]
                     for hit in single_hits: 
                         yao_pos=single_bed_ref_2_query(bed,hit)
@@ -231,7 +232,7 @@ def main(arglist=None):
                         else:
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
                     else:
-                        f3.write("\t".join([chrom,str(start+1),str(end+1),str(yao_pos),*datalist])+"\n")
+                        f3.write("\t".join([chrom,str(start+1),str(end+1),str(pos_list),*datalist])+"\n")
 
                     for hit in mul_hits:
                         yao_pos=mul_bed_ref_2_query(bed,hit)
@@ -275,6 +276,7 @@ def main(arglist=None):
                     if not single_hits and not mul_hits:
                         f3.write(line + '\n')
                         continue
+                    yao_pos=[]
                     pos_list=[]
                     for hit in single_hits: 
                         yao_pos=single_bed_query_2_ref(bed,hit)
@@ -298,7 +300,7 @@ def main(arglist=None):
                         else:
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
                     else:
-                        f3.write("\t".join([chrom,str(start+1),str(end+1),str(yao_pos),*datalist])+"\n")
+                        f3.write("\t".join([chrom,str(start+1),str(end+1),str(pos_list),*datalist])+"\n")
 
                     for hit in mul_hits:
                         yao_pos=mul_bed_query_2_ref(bed,hit)
@@ -341,4 +343,3 @@ if __name__ == '__main__':
     # "-file", "/home/lfszxyy/old/annotation/gffConfidence-Total/teachersrc/speedhmPB/YAOBridge/src/beddata/hg38bed.test",
     # "-out", "/home/lfszxyy/old/annotation/gffConfidence-Total/teachersrc/speedhmPB/YAOBridge/src/beddata/hg382yaobed.test"
     # ])
-
