@@ -214,6 +214,10 @@ def main(arglist=None):
                         yao_pos=single_bed_ref_2_query(bed,hit)
                         pos_list.extend(yao_pos)
                     if len(pos_list)==2 and pos_list[0][0]!=pos_list[1][0]:
+                        bedstrand=pos_list[0][3]
+                        newchrom=pos_list[0][1]
+                        score=str(pos_list[0][4])
+                        level=pos_list[0][5]
                         try:
                             pos1=pos_list[0][2]+1
                         except:
@@ -222,20 +226,19 @@ def main(arglist=None):
                             pos2=pos_list[1][2]+1
                         except:
                             pos2=pos_list[1][2]
-                        bedstrand=pos_list[0][3]
-                        newchrom=pos_list[0][1]
-                        score=str(pos_list[0][4])
-                        level=pos_list[0][5]
                         if clean_pos(pos1)<clean_pos(pos2):
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos1),str(pos2),bedstrand,score,level,*datalist])+"\n")  
                         else:
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
                     else:
-                        f3.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(yao_pos),score,level,*datalist])+"\n")
+                        f3.write("\t".join([chrom,str(start+1),str(end+1),str(yao_pos),*datalist])+"\n")
 
                     for hit in mul_hits:
                         yao_pos=mul_bed_ref_2_query(bed,hit)
                         if len(yao_pos)==2 and yao_pos[0][0]!=yao_pos[1][0]:
+                            bedstrand=yao_pos[0][3]
+                            score=str(yao_pos[0][4])
+                            level=yao_pos[0][5]
                             newchrom=yao_pos[0][1]
                             try:
                                 pos1=yao_pos[0][2]+1
@@ -245,16 +248,13 @@ def main(arglist=None):
                                 pos2=yao_pos[1][2]+1
                             except:
                                 pos2=yao_pos[1][2]
-                            bedstrand=yao_pos[0][3]
-                            score=str(yao_pos[0][4])
-                            level=yao_pos[0][5]
-                            if type(pos1) == str or type(pos2) == str:
-                                f3.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos1),str(pos2),bedstrand,score,level,*datalist])+"\n")  
+                            if clean_pos(pos1)<clean_pos(pos2):
+                                f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom, str(pos1),str(pos2),bedstrand,score,level,*datalist])+"\n")  
                             else:
-                                if pos1 < pos2:
-                                    f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom, str(pos1),str(pos2),bedstrand,score,level,*datalist])+"\n")  
-                                else:
-                                    f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom, str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
+                                f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom, str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
+                        else:
+                            f3.write("\t".join([chrom,str(start+1),str(end+1),str(yao_pos),*datalist])+"\n") 
+
         if args.s=="yao" and args.t=="hg38":
             with open(args.file, 'r') as f, open(args.out, 'w') as f2, open(failed_file_path, 'w') as f3:
                 lines=f.readlines()
@@ -298,12 +298,11 @@ def main(arglist=None):
                         else:
                             f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom,str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
                     else:
-                        f3.write("\t".join([chrom,str(start+1),str(end+1),*datalist])+"\n")
+                        f3.write("\t".join([chrom,str(start+1),str(end+1),str(yao_pos),*datalist])+"\n")
 
                     for hit in mul_hits:
                         yao_pos=mul_bed_query_2_ref(bed,hit)
                         if len(yao_pos)==2 and yao_pos[0][0]!=yao_pos[1][0]:
-                            newchrom=yao_pos[0][1]
                             try:
                                 pos1=yao_pos[0][2]+1
                             except:
@@ -315,14 +314,14 @@ def main(arglist=None):
                             bedstrand=yao_pos[0][3]
                             score=str(yao_pos[0][4])
                             level=yao_pos[0][5]
+                            newchrom=yao_pos[0][1]
                             # if type(pos1) == str or type(pos2) == str:
-                            if len(yao_pos)==2:
-                                if pos1 < pos2:
-                                    f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom, str(pos1),str(pos2),bedstrand,score,level,*datalist])+"\n")  
-                                else:
-                                    f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom, str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
+                            if clean_pos(pos1)<clean_pos(pos2):
+                                f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom, str(pos1),str(pos2),bedstrand,score,level,*datalist])+"\n")  
                             else:
-                                f3.write("\t".join([chrom,str(start+1),str(end+1),*datalist])+"\n") 
+                                f2.write("\t".join([chrom,str(start+1),str(end+1),newchrom, str(pos2),str(pos1),bedstrand,score,level,*datalist])+"\n")  
+                        else:
+                            f3.write("\t".join([chrom,str(start+1),str(end+1),str(yao_pos),*datalist])+"\n") 
 
 
 
