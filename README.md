@@ -191,8 +191,8 @@ YAOBridge liftpos \
 ```bash
 YAOBridge liftpos \
   -s hg38 -t yao \
-	-file /data/yao2hg38.test \
-	-out /data/yao2hg38answer.txt
+	-file /data/hg382yao.test \
+	-out /data/hg382yaoanswer.txt
 ```
 
 **Output**
